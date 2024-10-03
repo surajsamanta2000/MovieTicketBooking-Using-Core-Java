@@ -1,0 +1,111 @@
+package com.sl.project;
+
+import java.util.Scanner;
+import java.util.HashMap;
+
+class Theater {
+    private int[][] seatingArrangement;
+    private HashMap<Integer, String> bookings;
+
+    public Theater(int rows, int seatsPerRow) {
+        seatingArrangement = new int[rows][seatsPerRow];
+        bookings = new HashMap<>();
+    }
+
+    public void displaySeatingArrangement() {
+        System.out.println("Seating Arrangement:");
+        for (int i = 0; i < seatingArrangement.length; i++) {
+            for (int j = 0; j < seatingArrangement[i].length; j++) {
+                System.out.print(seatingArrangement[i][j] == 0 ? "O " : "X "); // O for available seats, X for booked seats
+            }
+            System.out.println();
+        }
+    }
+
+    public boolean bookTicket(int row, int seat, int bookingId) {
+        if (seatingArrangement[row - 1][seat - 1] == 0) {
+            seatingArrangement[row - 1][seat - 1] = bookingId;
+            bookings.put(bookingId, "Row: " + row + ", Seat: " + seat);
+            return true; // Booking successful
+        } else {
+            return false; // Seat already booked
+        }
+    }
+
+    public String getBookingStatus(int bookingId) {
+        return bookings.getOrDefault(bookingId, "Booking not found");
+    }
+}
+
+class FrontDesk {
+    private Scanner scanner;
+    private Theater theater;
+
+    public FrontDesk(Theater theater) {
+        scanner = new Scanner(System.in);
+        this.theater = theater;
+    }
+
+    public void bookTicket() {
+        System.out.print("Enter desired row number: ");
+        int row = scanner.nextInt();
+        System.out.print("Enter desired seat number: ");
+        int seat = scanner.nextInt();
+        System.out.print("Enter booking ID: ");
+        int bookingId = scanner.nextInt();
+
+        boolean bookingResult = theater.bookTicket(row, seat, bookingId);
+        if (bookingResult) {
+            System.out.println("Booking successful!");
+        } else {
+            System.out.println("Sorry, the seat is already booked. Please select another seat.");
+        }
+    }
+
+    public void checkBookingStatus() {
+        System.out.print("Enter booking ID to check status: ");
+        int bookingId = scanner.nextInt();
+        String status = theater.getBookingStatus(bookingId);
+        System.out.println("Booking Status: " + status);
+    }
+
+    public void displayMenu() {
+        System.out.println("\nMenu:");
+        System.out.println("1. Book Ticket");
+        System.out.println("2. Check Booking Status");
+        System.out.println("3. Exit");
+        System.out.print("Enter your choice: ");
+    }
+
+    public int getChoiceFromUser() {
+        return scanner.nextInt();
+    }
+}
+
+public class MovieTicketBookingSystem {
+    public static void main(String[] args) {
+        Theater theater = new Theater(5, 10); // 5 rows, 10 seats per row
+        FrontDesk frontDesk = new FrontDesk(theater);
+
+        // Main application loop
+        while (true) {
+            frontDesk.displayMenu();
+            int choice = frontDesk.getChoiceFromUser();
+
+            switch (choice) {
+                case 1:
+                    frontDesk.bookTicket();
+                    break;
+                case 2:
+                    frontDesk.checkBookingStatus();
+                    break;
+                case 3:
+                    System.out.println("Exiting application. Thank you!");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
