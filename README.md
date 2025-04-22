@@ -25,8 +25,8 @@ A simple Java console-based application to simulate a movie theater ticket booki
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/movie-ticket-booking-system.git
-   cd movie-ticket-booking-system
+  https://github.com/surajsamanta2000/MovieTicketBooking-Using-Core-Java
+   cd MovieTicketBooking-Using-Core-Java
 2.Compile the code:
    javac com/sl/project/MovieTicketBookingSystem.java
 3.Run the application:
